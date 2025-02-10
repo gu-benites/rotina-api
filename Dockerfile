@@ -28,8 +28,8 @@ RUN pip install -r requirements.txt
 # Copy the rest of the code
 COPY . .
 
-# Expose the port declared in gunicorn_conf.py (9011)
+# Expose the port declared for the FastAPI app (9011)
 EXPOSE 9011
 
-# Use gunicorn with uvicorn workers to run the FastAPI app
-CMD ["gunicorn", "main:app", "-k", "uvicorn.workers.UvicornWorker", "-c", "gunicorn_conf.py"] 
+# Use uvicorn directly to run the FastAPI app (modern and simple alternative)
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9011", "--workers", "2"] 
