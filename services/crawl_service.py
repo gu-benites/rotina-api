@@ -26,4 +26,9 @@ async def crawl(url, session):
         print(f"Request timed out for URL: {url}. Discarding and continuing...")
         return []
 
+# Added new function: start_crawling
+async def start_crawling(url):
+    async with aiohttp.ClientSession(timeout=timeout) as session:
+        return await crawl(url, session)
+
 # Additional functions...
