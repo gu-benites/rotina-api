@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies (required by some packages, e.g. for Selenium & cryptography)
+# Install system dependencies (required by some packages, e.g. for Selenium, cryptography, pydub, etc.)
 RUN apt-get update && apt-get install -y \
     build-essential \
     libssl-dev \
@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     chromium-driver \
     wget \
+    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements file first (if you have one) so that dependency installs can be cached
