@@ -9,6 +9,7 @@ from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 from pydub import AudioSegment
 from speech_recognition import Recognizer, AudioFile
 from api.dependencies import get_http_client
+import asyncio
 
 # Define any MIME type mappings and constants for media processing
 MEDIA_TYPE_MAPPING = {
@@ -71,3 +72,15 @@ async def decrypt_media(media_url: str, media_key_encoded: str, media_type: str)
         await client.aclose()  # Make sure to close the client
 
 # Additional utility functions...
+
+# Newly added transcribe_audio function for audio files
+async def transcribe_audio(filepath: str, mimetype: str) -> str:
+    loop = asyncio.get_event_loop()
+    def recognize():
+        recognizer = Recognizer()
+        with AudioFile(filepath) as source:
+            audio = recognizer.record(source)
+        # For example, using Google's Web Speech API; adjust as needed
+        return recognizer.recognize_google(audio)
+    transcription = await loop.run_in_executor(None, recognize)
+    return transcription
