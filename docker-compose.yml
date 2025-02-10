@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  rotina-natural-api:
+    container_name: rotina-natural-api
+    build: .
+    ports:
+      - "9011:9011"
+    environment:
+      # The env variables below will override the defaults embedded in .env
+      - OPENAI_API_KEY=$your_api_key_here
+      - OPENAI_ORG_ID=$your_org_id_here
+      - OPENAI_MODEL_EMBED=text-embedding-ada-002
+      - PINECONE_API_KEY=$your_pinecone_api_key_here
+      - PINECONE_REGION=$your_region_here
+      - PINECONE_INDEX_NAME=$your_index_name_here
+      - CREDENTIALS_DIR_PATH=data/tokens_credentials
+      - TOKEN_DIR_PATH=data/tokens_credentials
+      - AUDIO_FILES_DIR=data/audio_files
+      - CHROME_DRIVER_PATH=/usr/bin/chromedriver
+    volumes:
+      - .:/app
+      - tokens_credentials:/app/data/tokens_credentials
+      - audio_files:/app/data/audio_files
+    expose:
+      - "9011"  # This makes the port available to other containers (Traefik)
+    labels:
+      - "traefik.enable=true"
+      # Create a router for this container that listens on the "websecure" entrypoint
+      - "traefik.http.routers.rotina-natural-api.rule=Host(`endpoint.daianefreitas.com`)"
+      - "traefik.http.routers.rotina-natural-api.entrypoints=websecure"
+      - "traefik.http.routers.rotina-natural-api.tls=true"
+      - "traefik.http.routers.rotina-natural-api.tls.certresolver=le"
+      # Tell Traefik which port your container listens on
+      - "traefik.http.services.rotina-natural-api.loadbalancer.server.port=9011"
+    networks:
+      - traefik_network
+      - app_network
+
+networks:
+  traefik_network:
+    external: true
+  app_network:
+    external: true
+
+volumes:
+  tokens_credentials:
+  audio_files: 

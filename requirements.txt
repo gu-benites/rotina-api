@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+gunicorn
+httpx
+python-dotenv
+aiohttp
+pydantic
+selenium
+beautifulsoup4
+pycryptodome
+cryptography
+pydub
+SpeechRecognition
+openai
+pinecone-client
+phonenumbers
+pycountry 
