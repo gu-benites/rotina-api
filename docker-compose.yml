@@ -1,9 +1,8 @@
-version: '3.8'
+version: "3.8"
 
 services:
   rotina-natural-api:
-    container_name: rotina-natural-api
-    build: .
+    image: gu-benites/rotina-api  # Use your pre-built image 
     ports:
       - "9011:9011"
     environment:
@@ -19,11 +18,8 @@ services:
       - AUDIO_FILES_DIR=data/audio_files
       - CHROME_DRIVER_PATH=/usr/bin/chromedriver
     volumes:
-      - .:/app
       - tokens_credentials:/app/data/tokens_credentials
       - audio_files:/app/data/audio_files
-    expose:
-      - "9011"  # This makes the port available to other containers (Traefik)
     labels:
       - "traefik.enable=true"
       # Create a router for this container that listens on the "websecure" entrypoint
@@ -34,11 +30,11 @@ services:
       # Tell Traefik which port your container listens on
       - "traefik.http.services.rotina-natural-api.loadbalancer.server.port=9011"
     networks:
-      - traefik_network
+      - traefik_public
       - app_network
 
 networks:
-  traefik_network:
+  traefik_public:
     external: true
   app_network:
     external: true
