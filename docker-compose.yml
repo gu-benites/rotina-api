@@ -27,6 +27,7 @@ services:
       - "traefik.http.routers.rotina-natural-api.entrypoints=websecure"
       - "traefik.http.routers.rotina-natural-api.tls=true"
       - "traefik.http.routers.rotina-natural-api.tls.certresolver=le"
+      - "traefik.http.routers.rotina-natural-api.service=rotina-natural-api"
       # Tell Traefik which port your container listens on
       - "traefik.http.services.rotina-natural-api.loadbalancer.server.port=9011"
     networks:
